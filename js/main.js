@@ -3,11 +3,15 @@
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  const yrs = $('[data-years]');
+  if (yrs) { const n = new Date().getFullYear() - 2017; yrs.dataset.count = n; yrs.textContent = n + '+'; }
   $('#yr').textContent = new Date().getFullYear();
 
   /* sticky nav shadow */
   const nav = $('#nav');
-  const onScroll = () => nav.classList.toggle('is-stuck', scrollY > 8);
+  const totop = $('#totop');
+  const onScroll = () => { nav.classList.toggle('is-stuck', scrollY > 8); totop.classList.toggle('show', scrollY > 700); };
+  totop.addEventListener('click', () => scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }));
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
   /* mobile menu */
@@ -24,12 +28,12 @@
     `<g class="pin" style="--i:${i * 6}"><path transform="translate(${x} ${y})" d="M0 0C-9-10-12-15-12-21a12 12 0 0124 0c0 6-3 11-12 21z"/><circle cx="${x}" cy="${y - 21}" r="4.500" fill="#fff"/><text class="pinlbl" x="${x + 16}" y="${y - 20}">${n}</text><text x="${x + 16}" y="${y - 7}" font-size="10" font-weight="500" fill="#4a5b72">${t}</text></g>`).join('');
 
   /* scroll reveal + staggered children */
-  $$('.trust li,.svc li,.stats li,.cities li,.card').forEach((el, i) => el.style.setProperty('--d', (i % 5) * 80 + 'ms'));
+  $$('.trust li,.svc li,.stats li,.numbers li,.cities li,.card').forEach((el, i) => el.style.setProperty('--d', (i % 5) * 80 + 'ms'));
   const io = new IntersectionObserver((entries) => {
     entries.forEach(en => {
       if (!en.isIntersecting) return;
       en.target.classList.add('in'); io.unobserve(en.target);
-      if (en.target.matches('.stats li')) count($('strong', en.target));
+      if (en.target.matches('.stats li,.numbers li')) count($('strong', en.target));
     });
   }, { threshold: .15, rootMargin: '0px 0px -40px' });
   $$('.rv').forEach(el => io.observe(el));
@@ -74,10 +78,11 @@
     if (!e.isIntersecting) return;
     links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + e.target.id));
   }), { rootMargin: '-45% 0px -50% 0px' });
-  ['home', 'products', 'about', 'services', 'presence'].forEach(id => { const s = document.getElementById(id); s && secIO.observe(s); });
+  ['home', 'products', 'about', 'services', 'presence', 'contact'].forEach(id => { const s = document.getElementById(id); s && secIO.observe(s); });
 
   /* product search filter */
-  $('.search input').addEventListener('input', e => {
+  const sIn = $('.search input');
+  sIn && sIn.addEventListener('input', e => {
     const q = e.target.value.trim().toLowerCase();
     $$('.card', track).forEach(c => c.style.display = !q || c.textContent.toLowerCase().includes(q) ? '' : 'none');
     sync();
