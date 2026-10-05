@@ -257,7 +257,7 @@ h2{font-size:clamp(1.7rem,3vw,2.2rem);font-weight:700;margin-bottom:12px}
 .faq details[open]{background:#fff;box-shadow:0 8px 24px rgba(3,99,177,.1)}
 .faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 20px;min-height:56px;font-weight:700;font-size:.92rem;color:var(--blue-d)}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";flex:none;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:1.1rem;line-height:1;transition:transform .25s var(--ease)}
+.faq summary::after{content:"+";padding-bottom:5px;flex:none;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-size:1.1rem;line-height:1;transition:transform .25s var(--ease)}
 .faq details[open] summary::after{transform:rotate(45deg)}
 .faq details p{padding:0 20px 18px;font-size:.86rem;color:var(--mute);max-width:620px}
 
